@@ -118,9 +118,11 @@ class Worksheet
     @io.size
   end
   def strings
-    @worksheet.inject(Hash.new(0)) do |memo, row|
+    @worksheet.inject(Hash.new) do |memo, row|
       row.each do |cell|
-        memo[cell] += 1 if (cell.is_a?(String) && !cell.empty?)
+        next unless cell.is_a?(String) && !cell.empty?
+        memo[cell] ||= [memo.length, 0]
+        memo[cell][1] += 1
       end
       memo
     end

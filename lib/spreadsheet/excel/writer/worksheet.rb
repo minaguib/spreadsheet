@@ -117,10 +117,15 @@ class Worksheet
   def size
     @io.size
   end
+  # Returns a hash of strings used in Worksheet
+  # The test suite expects order to be preserved, so the hash is decorated not just with str => freq, but str => [index, freq]
+  # Since in ruby 1.8 iterating over a normal hash does not respect insert order
   def strings
-    @worksheet.inject(Hash.new(0)) do |memo, row|
+    @worksheet.inject(Hash.new) do |memo, row|
       row.each do |cell|
-        memo[cell] += 1 if (cell.is_a?(String) && !cell.empty?)
+        next unless cell.is_a?(String) && !cell.empty?
+        memo[cell] ||= [memo.length, 0]
+        memo[cell][1] += 1
       end
       memo
     end
