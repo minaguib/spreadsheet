@@ -88,7 +88,7 @@ class Workbook < Spreadsheet::Writer
       end
     end
     current_set.delete ''
-    if !stored.empty? && stored.all?{|x| current_set[x]}
+    if !stored.empty? && stored.all?{|x| current_set.include?(x) }
       ## if all previously stored strings are still needed, we don't have to
       #  rewrite all cells because the sst-index of such string does not change.
       additions = current - stored
